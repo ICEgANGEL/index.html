@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Métadonnées macOS spécifiques -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Pour Toi ❤️">
+    <meta name="format-detection" content="telephone=no">
+    
+    <!-- Icônes macOS (favicon, touch icon, etc.) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>">
+    <link rel="mask-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>" color="#ff6b8b">
+    
+    <title>Pour Toi Seule 💝 - macOS Edition</title>
+    
+    <!-- Police système macOS -->
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset macOS friendly */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Variables couleurs macOS */
+        :root {
+            --macos-red: #ff3b30;
+            --macos-pink: #ff2d55;
+            --macos-purple: #af52de;
+            --macos-blue: #007aff;
+            --macos-gray: #8e8e93;
+            --macos-bg: linear-gradient(145deg, #fff5f5 0%, #fff0f7 100%);
+            --macos-card-bg: rgba(255, 255, 255, 0.9);
+            --macos-blur: saturate(180%) blur(20px);
+            --macos-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            background: var(--macos-bg);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            color: #1d1d1f;
+        }
+        
+        /* Effet de profondeur macOS */
+        .macos-depth {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 150, 200, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 200, 150, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Container avec effet glassmorphism macOS */
+        .container {
+            background: var(--macos-card-bg);
+            backdrop-filter: var(--macos-blur);
+            -webkit-backdrop-filter: var(--macos-blur);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: var(--macos-shadow);
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        /* Barre de titre macOS style */
+        .macos-title-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 10;
+        }
+        
+        .macos-traffic-lights {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .traffic-light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .traffic-light.close { background: #ff5f56; }
+        .traffic-light.minimize { background: #ffbd2e; }
+        .traffic-light.maximize { background: #27ca3f; }
+        
+        /* Cœurs flottants améliorés */
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .heart-particle {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+            animation: floatHeart 8s ease-in-out infinite;
+        }
+        
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Contenu principal */
+        .content {
+            position: relative;
+            z-index: 2;
+            padding-top: 20px;
+        }
+        
+        h1 {
+            font-size: 2.8em;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--macos-pink), var(--macos-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: var(--macos-gray);
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        /* Photo de profil (optionnelle) */
+        .profile-section {
+            margin: 30px 0;
+        }
+        
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 8px 25px rgba(255, 45, 85, 0.2);
+            margin: 0 auto 20px;
+            display: block;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            padding: 5px;
+        }
+        
+        /* Section question */
+        .question-box {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .question {
+            font-size: 1.8em;
+            color: #1d1d1f;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+        
+        .name-highlight {
+            display: inline-block;
+            background: linear-gradient(120deg, #ff6b8b, #ff8e53);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+            padding: 0 5px;
+        }
+        
+        /* Boutons macOS style */
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 40px 0;
+            position: relative;
+            min-height: 200px;
+            align-items: center;
+        }
+        
+        .macos-btn {
+            padding: 18px 45px;
+            font-size: 1.4em;
+            font-weight: 500;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+        }
+        
+        .macos-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+        
+        .macos-btn:hover::after {
+            opacity: 1;
+        }
+        
+        .yes-btn {
+            background: linear-gradient(135deg, #27ca3f, #20b336);
+            color: white;
+            border: 1px solid rgba(39, 202, 63, 0.2);
+        }
+        
+        .yes-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(39, 202, 63, 0.3);
+        }
+        
+        .no-btn {
+            background: linear-gradient(135deg, #ff5f56, #ff3b30);
+            color: white;
+            border: 1px solid rgba(255, 95, 86, 0.2);
+            position: absolute;
+            transition: all 0.2s ease-out;
+        }
+        
+        .no-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 95, 86, 0.3);
+        }
+        
+        /* Messages de réponse */
+        .response-message {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 14px;
+            font-size: 1.3em;
+            color: var(--macos-pink);
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .response-message.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Dock macOS stylé */
+        .macos-dock {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 12px 20px;
+            display: flex;
+            gap: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            z-index: 100;
+        }
+        
+        .dock-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .dock-icon:hover {
+            transform: translateY(-10px) scale(1.2);
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Footer macOS */
+        .macos-footer {
+            margin-top: 40px;
+            color: var(--macos-gray);
+            font-size: 0.9em;
+            font-weight: 300;
+        }
+        
+        .macos-footer .heartbeat {
+            display: inline-block;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* Effets spéciaux */
+        .confetti {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                margin-top: 40px;
+            }
+            
+            h1 {
+                font-size: 2.2em;
+            }
+            
+            .question {
+                font-size: 1.5em;
+            }
+            
+            .macos-btn {
+                padding: 15px 35px;
+                font-size: 1.2em;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+                min-height: 250px;
+            }
+            
+            .no-btn {
+                position: relative;
+                margin-top: 20px;
+            }
+            
+            .macos-dock {
+                display: none; /* Cache le dock sur mobile */
+            }
+        }
+        
+        /* Animation pour le bouton qui fuit */
+        @keyframes escape {
+            0% { transform: translate(var(--x), var(--y)); }
+            100% { transform: translate(calc(var(--x) + var(--dx)), calc(var(--y) + var(--dy))); }
+        }
+        
+        /* Dark Mode support (macOS) */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --macos-bg: linear-gradient(145deg, #0d0d0d 0%, #1a1a1a 100%);
+                --macos-card-bg: rgba(30, 30, 30, 0.9);
+            }
+            
+            body {
+                color: #f5f5f7;
+            }
+            
+            .container {
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .question-box {
+                background: rgba(40, 40, 40, 0.6);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .response-message {
+                background: rgba(40, 40, 40, 0.7);
+            }
+            
+            .macos-dock {
+                background: rgba(40, 40, 40, 0.7);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Effet de profondeur -->
+    <div class="macos-depth"></div>
+    
+    <!-- Dock macOS -->
+    <div class="macos-dock">
+        <div class="dock-icon" onclick="showNotification('Tu es mon app préférée 💕')">💖</div>
+        <div class="dock-icon" onclick="playSound()">🎵</div>
+        <div class="dock-icon" onclick="takeScreenshot()">📸</div>
+        <div class="dock-icon" onclick="showLoveMessage()">💌</div>
+        <div class="dock-icon" onclick="toggleDarkMode()">🌙</div>
+    </div>
+    
+    <!-- Conteneur principal -->
+    <div class="container">
+        <!-- Barre de titre macOS -->
+        <div class="macos-title-bar">
+            <div class="macos-traffic-lights">
+                <div class="traffic-light close" onclick="closeWindow()"></div>
+                <div class="traffic-light minimize" onclick="minimizeWindow()"></div>
+                <div class="traffic-light maximize" onclick="maximizeWindow()"></div>
+            </div>
+        </div>
+        
+        <!-- Cœurs flottants -->
+        <div class="floating-hearts" id="floatingHearts"></div>
+        
+        <!-- Contenu -->
+        <div class="content">
+            <h1>💝 Pour Toi Seule 💝</h1>
+            <p class="subtitle">macOS Special Edition</p>
+            
+            <!-- Section photo optionnelle -->
+            <div class="profile-section">
+                <!-- Remplacez par une vraie photo si vous voulez -->
+                <div class="profile-image"></div>
+            </div>
+            
+            <!-- Question -->
+            <div class="question-box">
+                <p class="question">
+                    Ma chère <span class="name-highlight" id="girlfriendName">Chérie</span>,
+                    <br><br>
+                    J'ai quelque chose de très important à te demander...
+                    <br><br>
+                    <strong>Veux-tu être ma Valentine ?</strong>
+                </p>
+            </div>
+            
+            <!-- Boutons -->
+            <div class="buttons-container" id="buttonsContainer">
+                <button class="macos-btn yes-btn" id="yesBtn">
+                    OUI ! 💖
+                </button>
+                <button class="macos-btn no-btn" id="noBtn">
+                    NON 😅
+                </button>
+            </div>
+            
+            <!-- Message de réponse -->
+            <div class="response-message" id="responseMessage"></div>
+            
+            <!-- Footer -->
+            <div class="macos-footer">
+                <p>Fait avec <span class="heartbeat">❤️</span> spécialement pour toi</p>
+                <p style="font-size: 0.8em; margin-top: 10px; opacity: 0.7;">
+                    💻 Optimisé pour macOS • 🔊 Audio activé • 📱 PWA compatible
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const CONFIG = {
+            girlfriendName: "Chérie", // Changez ce nom !
+            enableNotifications: true,
+            enableSounds: true,
+            escapeRadius: 150
+        };
+        
+        // Initialisation
+        document.getElementById('girlfriendName').textContent = CONFIG.girlfriendName;
+        
+        // Générer des cœurs flottants
+        function generateHearts() {
+            const container = document.getElementById('floatingHearts');
+            const hearts = ['❤️', '💕', '💖', '💗', '💓', '💘', '💝'];
+            
+            for (let i = 0; i < 25; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-particle';
+                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                container.appendChild(heart);
+            }
+        }
+        
+        // Bouton NON qui fuit (version améliorée)
+        const noBtn = document.getElementById('noBtn');
+        const buttonsContainer = document.getElementById('buttonsContainer');
+        let noBtnPosition = { x: 0, y: 0 };
+        
+        // Position initiale au centre
+        noBtn.style.transform = 'translate(0, 0)';
+        
+        // Faire fuir le bouton
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            
+            const btnRect = noBtn.getBoundingClientRect();
+            const btnCenterX = btnRect.left + btnRect.width / 2;
+            const btnCenterY = btnRect.top + btnRect.height / 2;
+            
+            const distance = Math.hypot(mouseX - btnCenterX, mouseY - btnCenterY);
+            
+            if (distance < 100) {
+                // Calculer la direction
+                const angle = Math.atan2(btnCenterY - mouseY, btnCenterX - mouseX);
+                const force = 150;
+                
+                // Nouvelle position
+                const newX = Math.cos(angle) * force;
+                const newY = Math.sin(angle) * force;
+                
+                // Limiter dans le conteneur
+                const containerRect = buttonsContainer.getBoundingClientRect();
+                const maxX = containerRect.width / 2 - btnRect.width / 2;
+                const maxY = containerRect.height / 2 - btnRect.height / 2;
+                
+                noBtnPosition.x = Math.max(-maxX, Math.min(maxX, noBtnPosition.x + newX));
+                noBtnPosition.y = Math.max(-maxY, Math.min(maxY, noBtnPosition.y + newY));
+                
+                noBtn.style.transform = `translate(${noBtnPosition.x}px, ${noBtnPosition.y}px)`;
+            }
+        });
+        
+        // Gestionnaire OUI
+        document.getElementById('yesBtn').addEventListener('click', function() {
+            const message = `Génial ! Tu viens de faire de moi l'homme le plus heureux du monde, ${CONFIG.girlfriendName} ! 😍🎉`;
+            document.getElementById('responseMessage').textContent = message;
+            document.getElementById('responseMessage').classList.add('visible');
+            
+            // Célébration
+            celebrate();
+            
+            // Désactiver boutons
+            this.disabled = true;
+            noBtn.style.display = 'none';
+            
+            // Notification macOS style
+            if (CONFIG.enableNotifications && 'Notification' in window) {
+                showMacNotification("Elle a dit OUI ! 🎊", 
+                    `${CONFIG.girlfriendName} a accepté d'être ta Valentine !`);
+            }
+        });
+        
+        // Gestionnaire NON
+        noBtn.addEventListener('click', function() {
+            const messages = [
+                "Oh non ! Essaie encore 😉",
+                "Tu es sûre ? Clique sur OUI ! 💕",
+                "C'est pas possible, tu dois cliquer sur OUI !",
+                "Je sais que tu veux dire OUI !"
+            ];
+            const message = messages[Math.floor(Math.random() * messages.length)];
+            
+            document.getElementById('responseMessage').textContent = message;
+            document.getElementById('responseMessage').classList.add('visible');
+            
+            // Réinitialiser la position après un court délai
+            setTimeout(() => {
+                noBtnPosition = { x: 0, y: 0 };
+                noBtn.style.transform = 'translate(0, 0)';
+            }, 300);
+        });
+        
+        // Célébration
+        function celebrate() {
+            // Confettis
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    createConfetti();
+                }, i * 30);
+            }
+            
+            // Sons (si autorisé)
+            if (CONFIG.enableSounds) {
+                playCelebrationSound();
+            }
+            
+            // Ajouter plus de cœurs
+            generateExtraHearts();
+        }
+        
+        // Créer des confettis
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.top = '-20px';
+            confetti.style.backgroundColor = getRandomColor();
+            confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+            
+            document.body.appendChild(confetti);
+            
+            // Animation
+            const animation = confetti.animate([
+                { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+            ], {
+                duration: Math.random() * 2000 + 1000,
+                easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+            });
+            
+            animation.onfinish = () => confetti.remove();
+        }
+        
+        // Couleurs aléatoires
+        function getRandomColor() {
+            const colors = ['#ff6b8b', '#ff8e53', '#4CAF50', '#2196F3', '#9C27B0', '#FFEB3B'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        
+        // Sons de célébration
+        function playCelebrationSound() {
+            try {
+                // Créer un contexte audio simple
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // Do
+                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // Mi
+                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // Sol
+                
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } catch (e) {
+                console.log("Audio non supporté");
+            }
+        }
+        
+        // Fonctions du dock
+        function showNotification(message) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('Message spécial 💌', {
+                    body: message,
+                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">❤️</text></svg>'
+                });
+            } else {
+                alert(message);
+            }
+        }
+        
+        function playSound() {
+            const sounds = ['🎵', '🎶', '🎼'];
+            alert(sounds[Math.floor(Math.random() * sounds.length)] + ' Musique d\'amour !');
+        }
+        
+        function takeScreenshot() {
+            alert('📸 Capture d\'écran virtuelle prise ! (Cette fonction est symbolique)');
+        }
+        
+        function showLoveMessage() {
+            const messages = [
+                "Tu es la personne la plus importante de ma vie 💕",
+                "Chaque moment avec toi est précieux ✨",
+                "Ton sourire illumine mes journées ☀️",
+                "Je t'aime plus que tout au monde 🌍"
+            ];
+            showNotification(messages[Math.floor(Math.random() * messages.length)]);
+        }
+        
+        function toggleDarkMode() {
+            document.body.classList.toggle('force-dark');
+        }
+        
+        // Fonctions barre de titre
+        function closeWindow() {
+            if (confirm('Fermer cette belle déclaration ?')) {
+                document.body.style.opacity = '0';
+                setTimeout(() => {
+                    alert('💝 Merci d\'avoir visité ! Reviens quand tu veux !');
+                }, 500);
+            }
+        }
+        
+        function minimizeWindow() {
+            document.querySelector('.container').style.transform = 'scale(0.8)';
+            document.querySelector('.container').style.opacity = '0.5';
+            setTimeout(() => {
+                document.querySelector('.container').style.transform = '';
+                document.querySelector('.container').style.opacity = '';
+            }, 1000);
+        }
+        
+        function maximizeWindow() {
+            document.querySelector('.container').classList.toggle('maximized');
+        }
+        
+        // Notifications macOS style
+        function showMacNotification(title, body) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(title, {
+                    body: body,
+                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">❤️</text></svg>',
+                    badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">💝</text></svg>'
+                });
+            }
+        }
+        
+        // Demander la permission pour les notifications
+        if ('Notification' in window && Notification.permission === 'default') {
+            setTimeout(() => {
+                Notification.requestPermission();
+            }, 2000);
+        }
+        
+        // Générer des cœurs supplémentaires
+        function generateExtraHearts() {
+            generateHearts();
+        }
+        
+        // Initialiser
+        generateHearts();
+        
+        // Effet de chargement
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+        
+        // Support PWA (Installation sur macOS)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {
+                    // Silently fail if no service worker
+                });
+            });
+        }
+        
+        // Ajouter à l'écran d'accueil (iOS/macOS)
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prévenir l'affichage automatique
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
